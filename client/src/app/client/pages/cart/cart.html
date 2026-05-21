@@ -1,0 +1,78 @@
+<div class="max-w-7xl mx-auto px-4 py-10">
+
+  <h1 class="text-2xl font-bold mb-6">YOUR CART</h1>
+
+  <div class="grid md:grid-cols-3 gap-6">
+
+    <!-- 🛒 Cart Items -->
+    <div class="md:col-span-2 space-y-4">
+
+      <div *ngFor="let item of cart" class="flex items-center gap-4 border rounded-xl p-4">
+
+        <!-- Image -->
+        <img [src]="environment.staticFilesURL + item.product.image" class="w-20 h-20 object-cover rounded-lg" />
+
+        <!-- Info -->
+        <div class="flex-1">
+          <h3 class="font-semibold">
+            {{ item.product.title }} ❗ (السعر الحالي)
+          </h3>
+
+          <p class="font-bold mt-1">
+            ${{ item.price }} ✅ (وقت الإضافة)
+          </p>
+        </div>
+
+        <!-- Quantity -->
+        <div class="flex items-center gap-2 border rounded-full px-3 py-1">
+          <button (click)="decrease(item)">−</button>
+          <span>{{ item.quantity }}</span>
+          <button (click)="increase(item)">+</button>
+        </div>
+
+        <!-- Delete -->
+        <button (click)="remove(item.product.slug)" class="text-red-500">
+          🗑
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- 💳 Summary -->
+    <div class="border rounded-xl p-6 h-fit space-y-4">
+
+      <h2 class="font-semibold text-lg">Order Summary</h2>
+
+      <div class="flex justify-between">
+        <span>Subtotal</span>
+        <span>${{ getSubtotal() }}</span>
+      </div>
+
+      <div class="flex justify-between">
+        <span>Delivery Fee</span>
+        <span>$15</span>
+      </div>
+
+      <hr />
+
+      <div class="flex justify-between font-bold text-lg">
+        <span>Total</span>
+        <span>${{ getTotal() }}</span>
+      </div>
+
+      <div class="flex gap-2">
+        <input type="text" placeholder="Add promo code" class="flex-1 border rounded-full px-3 py-2 text-sm" />
+        <button class="bg-black text-white px-4 rounded-full">
+          Apply
+        </button>
+      </div>
+
+      <button class="w-full bg-black text-white py-3 rounded-full">
+        Go to Checkout →
+      </button>
+
+    </div>
+
+  </div>
+</div>

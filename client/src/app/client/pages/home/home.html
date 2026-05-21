@@ -1,0 +1,70 @@
+<div class="home-page">
+  <section class="hero-section" *ngIf="!isHeroLoading">
+    <div class="hero-copy">
+      <p class="hero-kicker">Fresh drops from your dashboard</p>
+      <h1>{{ hero?.title || 'Find clothes that match your style' }}</h1>
+      <p>
+        {{ hero?.subtitle || 'Update this section anytime from the backend and keep the homepage fresh.' }}
+      </p>
+
+      <div class="hero-actions">
+        <a routerLink="/home" fragment="new-arrivals" class="primary-cta">Shop new arrivals</a>
+        <a routerLink="/signup" class="secondary-cta">Create account</a>
+      </div>
+    </div>
+
+    <div
+      class="hero-visual"
+      [style.background-image]="hero?.backgroundImage ? 'url(' + environment.staticFilesURL + hero?.backgroundImage + ')' : ''"
+    >
+      <div class="hero-overlay"></div>
+    </div>
+  </section>
+
+  <section class="brands-strip" id="brands">
+    <div class="section-heading">
+      <p class="section-kicker">Featured brands</p>
+      <h2>Brands you can manage from the backend</h2>
+    </div>
+
+    <div class="brands-grid" *ngIf="visibleBrands.length; else brandsFallback">
+      <div class="brand-card" *ngFor="let brand of visibleBrands">
+        <img [src]="environment.staticFilesURL + brand.image" alt="Brand logo" />
+      </div>
+    </div>
+
+    <ng-template #brandsFallback>
+      <p class="empty-state">
+        {{ isBrandsLoading ? 'Loading brands...' : 'No visible brands yet.' }}
+      </p>
+    </ng-template>
+  </section>
+
+  <section class="arrivals-section" id="new-arrivals">
+    <div class="section-heading">
+      <p class="section-kicker">New arrivals</p>
+      <h2>The newest 6 products from your database</h2>
+    </div>
+
+    <div class="products-grid" *ngIf="newestProducts.length; else productsFallback">
+      <app-product-card
+        *ngFor="let product of newestProducts"
+        [title]="product.title"
+        [price]="product.price"
+        [slug]="product.slug"
+        [image]="environment.staticFilesURL + product.images[0]"
+      >
+      </app-product-card>
+    </div>
+
+    <ng-template #productsFallback>
+      <p class="empty-state">
+        {{ isProductsLoading ? 'Loading products...' : 'No products found yet.' }}
+      </p>
+    </ng-template>
+  </section>
+
+  <section class="testimonials-shell">
+    <app-testimonials></app-testimonials>
+  </section>
+</div>

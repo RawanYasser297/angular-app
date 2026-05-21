@@ -1,0 +1,59 @@
+<div class="bg-white absolute left-0 w-87.5 max-w-sm mx-auto p-5 rounded-2xl shadow-md">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold">Filters</h2>
+        <button class="text-sm opacity-70">✕</button>
+    </div>
+
+    <div class="border-b mb-4"></div>
+
+    <!-- Categories (Accordion) -->
+    <div class="mb-6">
+        <h3 class="font-medium mb-3">Categories</h3>
+
+        <div class="space-y-2">
+
+            <div *ngFor="let cat of categories" class="border rounded-lg">
+
+                <!-- Parent -->
+                <button (click)="toggleCategory(cat)"
+                    class="w-full flex justify-between items-center px-3 py-2 font-medium">
+                    {{ cat.name }}
+                    <span [class.rotate-180]="cat.open" class="transition"><img src="icons/downArrow.svg"
+                            alt="" /></span>
+                </button>
+
+                <!-- Children -->
+                <div *ngIf="cat.open" class="px-3 pb-2 space-y-1">
+                    <button *ngFor="let sub of cat.items" (click)="selectSubCategory(sub)"
+                        class="block w-full text-left px-2 py-1 rounded hover:bg-gray-100 transition"
+                        [class.bg-gray-100]="selectedCategory === sub">
+                        {{ sub }}
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div class="border-b mb-4"></div>
+
+    <!-- Price -->
+    <div class="mb-6">
+        <h3 class="font-medium mb-3">Price</h3>
+
+        <input type="range" min="0" max="500" [(ngModel)]="priceRange" class="w-full" />
+
+        <div class="flex justify-between text-sm mt-2">
+            <span>$0</span>
+            <span>${{ priceRange }}</span>
+        </div>
+    </div>
+
+    <!-- Apply -->
+    <button (click)="applyFilter()" class="w-full bg-black text-white py-3 rounded-full font-medium">
+        Apply Filter
+    </button>
+</div>

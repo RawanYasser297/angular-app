@@ -1,0 +1,38 @@
+const products = [
+  {
+    title: 'Nike Air Force 1',
+    price: 120,
+    images: ['https://example.com/nike1.jpg'],
+    description: 'Classic white sneakers',
+    category: 'shoes',
+    stock: 10,
+    slug: 'nike-air-force-1',
+  },
+  {
+    title: 'Adidas Ultraboost',
+    price: 180,
+    images: ['https://example.com/adidas1.jpg'],
+    description: 'Comfort running shoes',
+    category: 'shoes',
+    stock: 15,
+    slug: 'adidas-ultraboost',
+  },
+  {
+    title: 'Apple Watch Series 9',
+    price: 399,
+    images: ['https://example.com/applewatch.jpg'],
+    description: 'Smartwatch with fitness tracking',
+    category: 'electronics',
+    stock: 8,
+    slug: 'apple-watch-series-9',
+  },
+  {
+    title: 'Samsung Galaxy S24',
+    price: 999,
+    images: ['https://example.com/s24.jpg'],
+    description: 'Latest Samsung flagship phone',
+    category: 'electronics',
+    stock: 5,
+    slug: 'samsung-galaxy-s24',
+  },
+];

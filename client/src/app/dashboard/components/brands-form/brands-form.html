@@ -1,0 +1,70 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+
+  <!-- Upload -->
+  <div>
+    <label class="block mb-2 font-semibold">Upload Brand Logos (max 5)</label>
+
+    <input
+      type="file"
+      multiple
+      accept="image/*"
+      (change)="onFileSelect($event)"
+      class="border p-2 w-full rounded"
+    />
+    <p *ngIf="fileError" class="text-red-500 text-sm mt-1">
+    {{ fileError }}
+  </p>
+  </div>
+
+  <!-- Submit -->
+  <button
+    type="submit"
+    class="bg-black text-white px-4 py-2 rounded"
+  >
+    Save Logos
+  </button>
+
+  <br>
+
+  <div class="grid grid-cols-3 gap-4">
+
+  <div *ngFor="let logo of logos" class="relative">
+
+    <!-- 🔥 الصورة -->
+    <img
+      [src]="environment.staticFilesURL + logo.image"
+      class="h-24 w-full object-cover rounded border transition"
+      [class.opacity-30]="!logo.show"
+      [class.ring-2]="logo.show"
+      [class.ring-green-500]="logo.show"
+    />
+
+    <!-- 🔥 badge -->
+    <span
+      class="absolute bottom-1 left-1 text-xs px-2 py-1 rounded"
+      [class.bg-green-500]="logo.show"
+      [class.bg-gray-400]="!logo.show"
+    >
+      {{ logo.show ? 'Visible' : 'Hidden' }}
+    </span>
+
+    <!-- 🔥 toggle button -->
+    <button
+      type="button"
+      (click)="toggle(logo)"
+      class="absolute top-1 right-1 text-xs px-2 py-1 rounded text-white"
+      [class.bg-red-500]="logo.show"
+      [class.bg-green-600]="!logo.show"
+    >
+      {{ logo.show ? 'Hide' : 'Show' }}
+    </button>
+    <p *ngIf="toggleError" class="text-red-500 text-sm">
+  {{ toggleError }}
+</p>
+  </div>
+
+</div>
+
+  
+
+</form>

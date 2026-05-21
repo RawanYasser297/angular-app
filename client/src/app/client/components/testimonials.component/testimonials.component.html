@@ -1,0 +1,66 @@
+<div class="testimonials">
+  <div class="section-heading">
+    <p class="section-kicker">Testimonials</p>
+    <h2>What shoppers are saying</h2>
+    <p class="section-copy">Accepted testimonials appear here, and new submissions stay pending until an admin approves them.</p>
+  </div>
+
+  <p class="empty-state" *ngIf="isLoading">Loading testimonials...</p>
+
+  <div class="testimonial-grid" *ngIf="!isLoading && testimonials.length">
+    <article class="testimonial-card" *ngFor="let item of testimonials; trackBy: trackById">
+      <p class="quote">"{{ item.message }}"</p>
+      <div class="author-block">
+        <strong>{{ item.name }}</strong>
+        <span>{{ item.role || 'Customer' }}</span>
+      </div>
+    </article>
+  </div>
+
+  <p class="empty-state" *ngIf="!isLoading && !testimonials.length">No accepted testimonials yet. Be the first to send one.</p>
+
+  <form class="testimonial-form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="form-heading">
+      <h3>Share your testimonial</h3>
+      <p>Tell other shoppers how your experience went.</p>
+    </div>
+
+    <div class="form-grid">
+      <label>
+        <span>Name</span>
+        <input type="text" formControlName="name" placeholder="Your name" />
+        <small *ngIf="form.controls.name.touched && form.controls.name.invalid">Please enter at least 2 characters.</small>
+      </label>
+
+      <label>
+        <span>Role</span>
+        <input type="text" formControlName="role" placeholder="Frequent shopper" />
+      </label>
+    </div>
+
+    <label>
+      <span>Message</span>
+      <textarea rows="5" formControlName="message" placeholder="Share what you liked about the store or products"></textarea>
+      <small *ngIf="form.controls.message.touched && form.controls.message.invalid">Please enter at least 10 characters.</small>
+    </label>
+
+    <label>
+      <span>Rating</span>
+      <select formControlName="rating">
+        <option [ngValue]="5">5</option>
+        <option [ngValue]="4">4</option>
+        <option [ngValue]="3">3</option>
+        <option [ngValue]="2">2</option>
+        <option [ngValue]="1">1</option>
+      </select>
+    </label>
+
+    <p class="form-feedback" *ngIf="feedback" [class.success]="feedbackType === 'success'" [class.error]="feedbackType === 'error'">
+      {{ feedback }}
+    </p>
+
+    <button type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Sending...' : 'Send testimonial' }}
+    </button>
+  </form>
+</div>

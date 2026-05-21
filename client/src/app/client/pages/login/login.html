@@ -1,0 +1,49 @@
+<section class="login-shell">
+  <div class="login-panel">
+    <div class="intro">
+      <p class="eyebrow">Welcome back</p>
+      <h1>Log in to continue shopping</h1>
+      <p class="subcopy">
+        Use the email and password you created during signup to access your account.
+      </p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="login-form">
+      <label class="field">
+        <span>Email</span>
+        <input type="email" placeholder="name@example.com" formControlName="email" />
+        <small *ngIf="form.get('email')?.touched && form.get('email')?.invalid">
+          Enter a valid email address.
+        </small>
+      </label>
+
+      <label class="field">
+        <span>Password</span>
+        <div class="password-wrap">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Enter your password"
+            formControlName="password"
+          />
+          <button type="button" class="ghost-toggle" (click)="showPassword = !showPassword">
+            {{ showPassword ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+        <small *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+          Password must be at least 6 characters.
+        </small>
+      </label>
+
+      <p *ngIf="errorMsg" class="error-text">{{ errorMsg }}</p>
+
+      <button type="submit" [disabled]="loading || form.invalid" class="primary-btn">
+        {{ loading ? 'Logging in...' : 'Log in' }}
+      </button>
+
+      <p class="signup-link">
+        New here?
+        <a routerLink="/signup">Create an account</a>
+      </p>
+    </form>
+  </div>
+</section>

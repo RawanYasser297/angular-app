@@ -1,0 +1,31 @@
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+
+  <app-product-card-skeleton
+    *ngIf="isLoading"
+    [count]="6"
+    class="col-span-full grid grid-cols-2 md:grid-cols-3 gap-4"
+  >
+  </app-product-card-skeleton>
+
+  <!-- ❌ No Products -->
+  <ng-container *ngIf="!isLoading && !myProducts.length">
+    <div class="col-span-full text-center py-10">
+      No products found
+    </div>
+  </ng-container>
+
+  <!-- ✅ Products -->
+  <ng-container *ngIf="!isLoading && myProducts.length">
+    <app-product-card
+      *ngFor="let product of myProducts"
+      [title]="product.title"
+      [price]="product.price"
+      [slug]="product.slug"
+      [image]="environment.staticFilesURL + product.images[0]"
+      [routerLink]="['/details', product.slug]"
+      class="cursor-pointer"
+    >
+    </app-product-card>
+  </ng-container>
+
+</div>

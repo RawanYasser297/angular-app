@@ -1,0 +1,60 @@
+<div *ngIf="product as p" class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-10">
+
+  <!-- LEFT -->
+  <div class="flex gap-4">
+
+    <!-- Thumbnails -->
+    <div class="flex flex-col gap-3">
+      <img *ngFor="let img of p.images" [src]="environment.staticFilesURL + img"
+        (click)="changeImage(environment.staticFilesURL + img)"
+        class="w-20 h-20 object-cover rounded-xl border cursor-pointer hover:scale-105 transition" />
+    </div>
+
+    <!-- Main Image -->
+    <div class="flex-1 bg-gray-100 rounded-2xl flex items-center justify-center p-6">
+      <img [src]="environment.staticFilesURL + selectedImage" class="max-h-[400px] object-contain" />
+    </div>
+
+  </div>
+
+  <!-- RIGHT -->
+  <div class="flex flex-col justify-center">
+
+    <h1 class="text-2xl font-bold mb-2">{{ p.title }}</h1>
+
+    <!-- Rating -->
+    <div class="flex items-center gap-2 mb-3">
+      <div class="flex text-yellow-400">
+        <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+          <span *ngIf="i < p.rating">★</span>
+          <span *ngIf="i >= p.rating">☆</span>
+        </ng-container>
+      </div>
+      <span class="text-sm text-gray-500">{{ p.rating }}/5</span>
+    </div>
+
+    <!-- Price -->
+    <p class="text-2xl font-semibold mb-4">${{ p.price }}</p>
+
+    <!-- Description -->
+    <p class="text-gray-500 mb-6">{{ p.description }}</p>
+
+    <!-- Quantity -->
+    <div class="flex items-center gap-4">
+      <div class="flex items-center border rounded-full px-3 py-1">
+        <button (click)="decrease()" class="px-2 text-lg">-</button>
+        <span class="px-3">{{ quantity }}</span>
+        <button (click)="increase()" class="px-2 text-lg">+</button>
+      </div>
+
+      <button class="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition">
+        <a class="block p-2 rounded hover:bg-gray-100" routerLink="/cart" (click)="addToCart(product.slug)"
+          routerLinkActive="active-link">Add
+          to Cart</a>
+      </button>
+    </div>
+
+
+  </div>
+
+</div>

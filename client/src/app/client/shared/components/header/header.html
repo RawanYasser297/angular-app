@@ -1,0 +1,115 @@
+<!-- 🔝 Top Banner -->
+<div class="bg-[var(--color-black)] text-white text-sm text-center py-2 relative">
+  <span>
+    Sign up and get 20% off to your first order.
+    <a routerLink="/signup" class="underline font-medium ml-1">Sign Up Now</a>
+  </span>
+
+  <button class="absolute right-4 top-1/2 -translate-y-1/2 text-lg">
+    ✕
+  </button>
+</div>
+
+<!-- 🧭 Header -->
+<header class="bg-white border-b border-[var(--color-gray-medium)] menu-container relative">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+
+    <!-- 🍔 Mobile Menu Button -->
+    <button class="md:hidden text-2xl" (click)="toggleMobileMenu()">
+      ☰
+    </button>
+
+    <!-- 🏷 Logo -->
+    <a routerLink="/home" class="text-2xl font-bold">SHOP.CO</a>
+
+    <!-- 🖥 Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+
+      <!-- Shop Dropdown -->
+      <div class="relative">
+        <button (click)="toggleShopDropdown()" class="flex items-center gap-1 hover:text-black">
+          Shop ▾
+        </button>
+
+        <!-- Dropdown -->
+        <div *ngIf="shopDropdownOpen" class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-xl shadow-lg
+                 transition-all duration-200 origin-top scale-95 opacity-0 animate-dropdown">
+          <a routerLink="/home" class="block px-4 py-2 hover:bg-gray-100">Men</a>
+          <a routerLink="/home" class="block px-4 py-2 hover:bg-gray-100">Women</a>
+          <a routerLink="/home" class="block px-4 py-2 hover:bg-gray-100">Kids</a>
+        </div>
+      </div>
+      <a routerLink="/home" fragment="new-arrivals">New Arrivals</a>
+      <a routerLink="/home" fragment="brands">Brands</a>
+    </nav>
+
+    <!-- 🔍 Search -->
+    <div class="hidden md:flex items-center  rounded-full ps-2.5 bg-[#F0F0F0] flex-1 max-w-xl mx-6 ">
+      <img src="icons/search.svg" alt="Search Icon" class=" w-5 h-5" />
+      <input type="text" placeholder="Search for products..."
+        class="w-full  rounded-full px-4 py-2 text-sm outline-none" />
+    </div>
+
+    <!-- 🛒 Icons -->
+
+    <div class="flex items-center gap-4 text-xl">
+
+      <!-- 🛒 Cart (always visible) -->
+      <a routerLink="/cart">
+        <img src="icons/cart.svg" alt="Cart Icon">
+      </a>
+
+      <!-- 👤 IF LOGGED IN -->
+      <ng-container *ngIf="isLoggedIn; else guestLinks">
+
+        <!-- User icon -->
+        <a routerLink="/profile" class="flex items-center gap-2">
+          <img src="icons/user.svg" alt="User Icon">
+        </a>
+
+        <!-- Logout -->
+        <button (click)="logout()" class="text-sm font-semibold hover:text-red-500 transition">
+          Logout
+        </button>
+
+      </ng-container>
+
+      <!-- 🔑 IF NOT LOGGED IN -->
+      <ng-template #guestLinks>
+        <a routerLink="/login" class="text-sm font-semibold hover:underline">
+          Login
+        </a>
+
+        <a routerLink="/signup" class="text-sm font-semibold hover:underline">
+          Sign Up
+        </a>
+      </ng-template>
+
+    </div>
+
+  </div>
+
+  <!-- 📱 Mobile Menu -->
+  <div *ngIf="mobileMenuOpen" class="md:hidden bg-white border-t px-4 py-4 space-y-3 animate-slideDown">
+    <!-- Dropdown inside mobile -->
+    <div>
+      <button class="w-full text-left font-medium" (click)="toggleShopDropdown()">
+        Shop ▾
+      </button>
+
+      <div *ngIf="shopDropdownOpen" class="ml-4 mt-2 space-y-2">
+        <a routerLink="/home" class="block">Men</a>
+        <a routerLink="/home" class="block">Women</a>
+        <a routerLink="/home" class="block">Kids</a>
+      </div>
+    </div>
+
+    <a routerLink="/home" fragment="new-arrivals" class="block">New Arrivals</a>
+    <a routerLink="/home" fragment="brands" class="block">Brands</a>
+    <a *ngIf="!isLoggedIn" routerLink="/login" class="block font-medium">Login</a>
+
+    <!-- Mobile Search -->
+    <input type="text" placeholder="Search..."
+      class="w-full bg-[var(--color-gray-light)] rounded-full px-4 py-2 text-sm outline-none" />
+  </div>
+</header>

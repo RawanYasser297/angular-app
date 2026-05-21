@@ -1,0 +1,26 @@
+<div class="flex h-screen bg-gray-100">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white shadow-md">
+        <div class="p-4 text-xl font-bold border-b">Company</div>
+
+        <nav class="p-4 space-y-2">
+            <a class="block p-2 rounded hover:bg-gray-100">Dashboard</a>
+            <a class="block p-2 rounded bg-blue-100 text-blue-600 font-semibold" routerLink="/dashboard/product"
+                routerLinkActive="active-link">Products</a>
+            <a class="block p-2 rounded hover:bg-gray-100" routerLink="/dashboard/testimonials"
+                routerLinkActive="active-link">Testimonials</a>
+            <span class="block p-2 rounded text-gray-400 cursor-not-allowed">Orders</span>
+            <span class="block p-2 rounded text-gray-400 cursor-not-allowed">Customers</span>
+            <select class="border p-2 rounded w-full" (change)="navigate($event)">
+                <option value="">Content</option>
+                <option value="/dashboard/content/hero">Hero</option>
+                <option value="/dashboard/content/progress">Progress</option>
+                <option value="/dashboard/content/brands">Brands</option>
+            </select>
+
+            <!-- <a class="block p-2 rounded hover:bg-gray-100" routerLink="/dashboard/product" routerLinkActive="active-link">Analytics</a>
+            <a class="block p-2 rounded hover:bg-gray-100" routerLink="/dashboard/product" routerLinkActive="active-link">Settings</a> -->
+        </nav>
+    </aside>
+</div>

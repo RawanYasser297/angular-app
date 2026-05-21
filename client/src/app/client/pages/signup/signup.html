@@ -1,0 +1,156 @@
+<section class="signup-shell">
+  <div class="signup-panel">
+    <div class="intro">
+      <p class="eyebrow">Create your account</p>
+      <h1>Sign up with multiple saved delivery locations</h1>
+      <p class="subcopy">
+        Add every address you use manually so checkout and delivery are ready from day one.
+      </p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="signup-form">
+      <div class="field-grid">
+        <label class="field">
+          <span>Full name</span>
+          <input type="text" placeholder="Ahmed Ali" formControlName="name" />
+          <small *ngIf="form.get('name')?.touched && form.get('name')?.invalid">Name is required.</small>
+        </label>
+
+        <label class="field">
+          <span>Email</span>
+          <input type="email" placeholder="name@example.com" formControlName="email" />
+          <small *ngIf="form.get('email')?.touched && form.get('email')?.invalid">Enter a valid email.</small>
+        </label>
+      </div>
+
+      <div class="field-grid">
+        <label class="field">
+          <span>Password</span>
+          <div class="password-wrap">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              placeholder="Create a strong password"
+              formControlName="password"
+            />
+            <button type="button" class="ghost-toggle" (click)="showPassword = !showPassword">
+              {{ showPassword ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          <small *ngIf="form.get('password')?.touched && form.get('password')?.invalid">
+            Use 6+ characters with uppercase, lowercase, and a number.
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Confirm password</span>
+          <div class="password-wrap">
+            <input
+              [type]="showConfirm ? 'text' : 'password'"
+              placeholder="Repeat your password"
+              formControlName="confirmPassword"
+            />
+            <button type="button" class="ghost-toggle" (click)="showConfirm = !showConfirm">
+              {{ showConfirm ? 'Hide' : 'Show' }}
+            </button>
+          </div>
+          <small *ngIf="form.hasError('mismatch') && form.get('confirmPassword')?.touched">
+            Passwords do not match.
+          </small>
+        </label>
+      </div>
+
+      <div class="locations-block">
+        <div class="locations-header">
+          <div>
+            <p class="section-kicker">Phone numbers</p>
+            <h2>Add one or more contact numbers</h2>
+          </div>
+
+          <button type="button" class="secondary-btn" (click)="addPhoneNumber()">
+            Add phone
+          </button>
+        </div>
+
+        <p class="maps-error" *ngIf="form.hasError('phoneNumbersRequired') && form.touched">
+          At least one phone number is required.
+        </p>
+
+        <div formArrayName="phoneNumbers" class="location-list">
+          <div
+            class="location-card"
+            *ngFor="let phone of phoneNumbers.controls; let i = index; trackBy: trackPhone"
+            [formGroupName]="i"
+          >
+            <div class="location-card-top">
+              <strong>Phone {{ i + 1 }}</strong>
+              <button type="button" class="danger-link" (click)="removePhoneNumber(i)">
+                Remove
+              </button>
+            </div>
+
+            <div class="field-grid">
+              <label class="field">
+                <span>Phone number</span>
+                <input type="text" placeholder="+20 100 000 0000" formControlName="number" />
+                <small *ngIf="phone.get('number')?.touched && phone.get('number')?.invalid">
+                  Enter a valid phone number.
+                </small>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="locations-block">
+        <div class="locations-header">
+          <div>
+            <p class="section-kicker">Saved locations</p>
+            <h2>Add one or more delivery locations manually</h2>
+          </div>
+
+          <button type="button" class="secondary-btn" (click)="addLocation()">
+            Add location
+          </button>
+        </div>
+
+        <p class="maps-error" *ngIf="form.hasError('locationsRequired') && form.touched">
+          At least one valid location is required.
+        </p>
+
+        <div formArrayName="addresses" class="location-list">
+          <div
+            class="location-card"
+            *ngFor="let location of addresses.controls; let i = index; trackBy: trackLocation"
+            [formGroupName]="i"
+          >
+            <div class="location-card-top">
+              <strong>Location {{ i + 1 }}</strong>
+              <button type="button" class="danger-link" (click)="removeLocation(i)">
+                Remove
+              </button>
+            </div>
+
+            <label class="field">
+              <span>Address</span>
+              <input type="text" placeholder="Street, area, city..." formControlName="addressLine" />
+              <small *ngIf="location.get('addressLine')?.touched && location.get('addressLine')?.invalid">
+                Address is required.
+              </small>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <p *ngIf="submitError" class="maps-error">{{ submitError }}</p>
+
+      <button type="submit" [disabled]="loading || form.invalid" class="primary-btn">
+        {{ loading ? 'Creating account...' : 'Create account' }}
+      </button>
+
+      <p class="login-link">
+        Already have an account?
+        <a routerLink="/login">Log in</a>
+      </p>
+    </form>
+  </div>
+</section>

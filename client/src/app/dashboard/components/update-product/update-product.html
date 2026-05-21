@@ -1,0 +1,59 @@
+<form 
+  [formGroup]="productForm" 
+  (ngSubmit)="submit()"
+  class="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow-md space-y-4"
+>
+
+  <!-- Title -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Title</label>
+    <input 
+      type="text" 
+      formControlName="title"
+      placeholder="Enter product title"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <!-- Price -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Price</label>
+    <input 
+      type="number" 
+      formControlName="price"
+      placeholder="Enter price"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <!-- Slug -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Slug</label>
+    <input 
+      type="text" 
+      formControlName="slug"
+      placeholder="product-slug"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </div>
+
+  <!-- File Upload -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Images</label>
+    <input 
+      type="file" 
+      multiple 
+      (change)="onFileChange($event)"
+      class="w-full border border-gray-300 rounded-lg p-2 file:mr-3 file:py-1 file:px-3 file:border-0 file:rounded file:bg-blue-100 file:text-blue-700 hover:file:bg-blue-200"
+    />
+  </div>
+
+  <!-- Submit Button -->
+  <button 
+    type="submit"
+    class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-200"
+  >
+    Update Product
+  </button>
+
+</form>

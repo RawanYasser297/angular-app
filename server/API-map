@@ -1,0 +1,9 @@
+GET    /api/testimonials              → accepted فقط
+POST   /api/testimonials              → user يضيف (pending)
+
+GET    /api/testimonials/admin        → admin يشوف الكل
+
+PATCH  /api/testimonials/:id/review   → accept / reject
+
+PUT    /api/testimonials/:id          → تعديل
+DELETE /api/testimonials/:id          → حذف

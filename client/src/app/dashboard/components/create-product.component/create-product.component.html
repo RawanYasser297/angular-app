@@ -1,0 +1,83 @@
+<h2 class="text-2xl font-bold mb-4 text-center">Create Product</h2>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow-md space-y-4">
+
+  <!-- Title -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Title</label>
+    <input type="text" formControlName="title" placeholder="Enter product title"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Description</label>
+    <textarea type="text" formControlName="desc" placeholder="Enter product description"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+  </div>
+
+  <!-- Price -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Price</label>
+    <input type="number" formControlName="price" placeholder="Enter price"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Stock</label>
+    <input type="number" formControlName="stock" placeholder="Enter Initial Stuck Value"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+  </div>
+
+  <!-- Slug -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Slug</label>
+    <input type="text" formControlName="slug" placeholder="product-slug"
+      class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+  </div>
+
+  <!-- Category -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Category</label>
+
+    <select formControlName="category" class="w-full border border-gray-300 rounded-lg p-2 
+           focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option value="" disabled>Select Category</option>
+      <option value="men" >Men</option>
+      <option value="women">Women</option>
+      <option value="children">Children</option>
+      <option value="teenager">Teenager</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium mb-1">Session</label>
+
+    <select formControlName="session" class="w-full border border-gray-300 rounded-lg p-2 
+           focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option value="" disabled>Select Session</option>
+      <option value="summer" >Summer</option>
+      <option value="winter">Winter</option>
+      <option value="autumn">Autumn</option>
+      <option value="spring">Spring</option>
+    </select>
+  </div>
+
+  <!-- File Upload -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Images</label>
+    <input type="file" multiple (change)="onFileChange($event)" class="w-full border border-gray-300 rounded-lg p-2 
+             file:mr-3 file:py-1 file:px-3 file:border-0 
+             file:rounded file:bg-blue-100 file:text-blue-700 
+             hover:file:bg-blue-200" />
+  </div>
+
+  <!-- Submit -->
+  <button type="submit"
+    class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition duration-200">
+    Create Product
+  </button>
+
+  <p *ngIf="successMessage" class="text-sm text-green-600 text-center">{{ successMessage }}</p>
+  <p *ngIf="errorMessage" class="text-sm text-red-600 text-center">{{ errorMessage }}</p>
+
+</form>
