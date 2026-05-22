@@ -2,7 +2,12 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const COOKIE_MAX_AGE = 7 * 24 * 60 * 60 * 1000;
-
+const cookieOptions = {
+  httpOnly: true,
+  sameSite: "lax",
+  secure: process.env.NODE_ENV === "production",
+  path: "/", // 🔥 دي كانت ناقصة عندك
+};
 const sanitizeUser = (user) => ({
   id: user._id,
   name: user.name,
@@ -15,19 +20,13 @@ const sanitizeUser = (user) => ({
 });
 
 const signToken = (user) =>
-  jwt.sign(
-    { id: user._id, role: user.role },
-    process.env.SECRET_KEY,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN || "7d",
-    }
-  );
+  jwt.sign({ id: user._id, role: user.role }, process.env.SECRET_KEY, {
+    expiresIn: process.env.JWT_EXPIRES_IN || "7d",
+  });
 
 const setAuthCookie = (res, token) => {
   res.cookie("token", token, {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    ...cookieOptions,
     maxAge: COOKIE_MAX_AGE,
   });
 };
@@ -63,26 +62,21 @@ const buildAuthResponse = (res, statusCode, message, user) => {
 
 exports.signup = async (req, res) => {
   try {
-    const name = req.body.name ?? req.body.Name ?? '';
-    const email = req.body.email ?? '';
-    const password = req.body.password ?? '';
-    const confirmPassword = req.body.confirmPassword ?? req.body.confirm_password ?? password;
+    const name = req.body.name ?? req.body.Name ?? "";
+    const email = req.body.email ?? "";
+    const password = req.body.password ?? "";
+    const confirmPassword =
+      req.body.confirmPassword ?? req.body.confirm_password ?? password;
     const role = req.body.role ?? "user";
     const addressesInput =
       req.body.addresses ??
-      (req.body.location
-        ? [{ addressLine: req.body.location }]
-        : []);
+      (req.body.location ? [{ addressLine: req.body.location }] : []);
     const phoneNumbersInput =
       req.body.phoneNumbers ??
-      (req.body.phone
-        ? [{ number: req.body.phone }]
-        : []);
+      (req.body.phone ? [{ number: req.body.phone }] : []);
 
-    const {
-      addresses = addressesInput,
-      phoneNumbers = phoneNumbersInput,
-    } = req.body;
+    const { addresses = addressesInput, phoneNumbers = phoneNumbersInput } =
+      req.body;
 
     if (!name || !email || !password || !confirmPassword) {
       return res.status(400).json({
@@ -174,8 +168,15 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.getMe = async (req, res) => {
+  if (!req.user) {
+    return res.status(200).json({
+      status: "not login",
+      data: null,
+    });
+  }
+
   return res.status(200).json({
-    status: "success",
+    status: "login",
     data: sanitizeUser(req.user),
   });
 };
@@ -224,15 +225,16 @@ exports.updateUserInfo = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  res.cookie("token", "", {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    expires: new Date(0),
-  });
-
-  res.status(200).json({
-    status: "success",
-    message: "Logged out successfully",
-  });
+  try {
+    res.clearCookie("token", cookieOptions);
+    return res.status(200).json({
+      status: "success",
+      message: "Logged out successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      status: "error",
+      message: "error cannot logout",
+    });
+  }
 };

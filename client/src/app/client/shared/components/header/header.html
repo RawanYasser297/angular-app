@@ -50,40 +50,23 @@
         class="w-full  rounded-full px-4 py-2 text-sm outline-none" />
     </div>
 
-    <!-- 🛒 Icons -->
-
     <div class="flex items-center gap-4 text-xl">
 
-      <!-- 🛒 Cart (always visible) -->
       <a routerLink="/cart">
         <img src="icons/cart.svg" alt="Cart Icon">
       </a>
+      <div *ngIf="!isLoading">
+        <div *ngIf="isLoggedIn() | async; else guest" class="flex flex-row gap-2.5 justify-center  items-center">
+          <a routerLink="/profile"><img src="icons/user.svg" alt=""></a>
+          <button (click)="logout()" class="cursor-pointer hover:text-red">Logout</button>
+        </div>
+        <ng-template #guest>
+          <a routerLink="/login">Login</a>
+        </ng-template>
 
-      <!-- 👤 IF LOGGED IN -->
-      <ng-container *ngIf="isLoggedIn; else guestLinks">
+      </div>
 
-        <!-- User icon -->
-        <a routerLink="/profile" class="flex items-center gap-2">
-          <img src="icons/user.svg" alt="User Icon">
-        </a>
 
-        <!-- Logout -->
-        <button (click)="logout()" class="text-sm font-semibold hover:text-red-500 transition">
-          Logout
-        </button>
-
-      </ng-container>
-
-      <!-- 🔑 IF NOT LOGGED IN -->
-      <ng-template #guestLinks>
-        <a routerLink="/login" class="text-sm font-semibold hover:underline">
-          Login
-        </a>
-
-        <a routerLink="/signup" class="text-sm font-semibold hover:underline">
-          Sign Up
-        </a>
-      </ng-template>
 
     </div>
 
@@ -106,7 +89,7 @@
 
     <a routerLink="/home" fragment="new-arrivals" class="block">New Arrivals</a>
     <a routerLink="/home" fragment="brands" class="block">Brands</a>
-    <a *ngIf="!isLoggedIn" routerLink="/login" class="block font-medium">Login</a>
+    <a *ngIf="!isLoggedIn()" routerLink="/login" class="block font-medium">Login</a>
 
     <!-- Mobile Search -->
     <input type="text" placeholder="Search..."

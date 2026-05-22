@@ -15,11 +15,14 @@ export class Logout {
   ) {}
 
   onLogout() {
-    this.authService.logout().subscribe({
-      next: () => {
-        this.authService.isLoggedInState = false;
-        this.router.navigate(['/login']);
-      },
-    });
-  }
+  this.authService.logout().subscribe({
+    next: () => {
+      this.router.navigate(['/login']);
+    },
+    error: () => {
+      // حتى لو حصل error، نعمل redirect برضه
+      this.router.navigate(['/login']);
+    }
+  });
+}
 }

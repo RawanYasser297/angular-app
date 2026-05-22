@@ -18,13 +18,8 @@ const getCookieValue = (cookieHeader, key) => {
 // ================= AUTHENTICATE =================
 const authenticate = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization;
-    const bearerToken =
-      authHeader && authHeader.startsWith('Bearer ')
-        ? authHeader.split(' ')[1]
-        : null;
     const cookieToken = getCookieValue(req.headers.cookie, 'token');
-    const token = bearerToken || cookieToken;
+    const token =  cookieToken;
 
     if (!token) {
       return next(new AppError('Unauthorized: No token provided', 401));

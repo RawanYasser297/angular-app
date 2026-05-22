@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Auth } from '../../../../core/services/auth';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -12,12 +13,19 @@ import { Auth } from '../../../../core/services/auth';
 export class Header {
   mobileMenuOpen = false;
   shopDropdownOpen = false;
+  isLoading = true;
 
-  constructor(private authService: Auth) {}
+  constructor(
+    private authService: Auth,
+    private _cdr: ChangeDetectorRef,
+  ) {}
 
-  get isLoggedIn() {
-    return this.authService.isLoggedInState;
+  ngOnInit() {
+    this.authService.getMe().subscribe();
+    this.isLoading = false;
   }
+
+  isLoggedIn = () => this.authService.isLoggedIn$;
 
   toggleMobileMenu() {
     this.mobileMenuOpen = !this.mobileMenuOpen;
@@ -42,6 +50,13 @@ export class Header {
   }
 
   logout() {
-  this.authService.logout(); // يمسح التوكن + state
-}
+    this.authService.logout().subscribe({
+      next: () => {
+        console.log('logout done');
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    }); // يمسح التوكن + state
+  }
 }

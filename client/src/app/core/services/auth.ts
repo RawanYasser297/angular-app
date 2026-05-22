@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs';
+import { BehaviorSubject, catchError, map, of, tap } from 'rxjs';
 import { environment } from '../../../environments/global';
 import { IUser } from '../models/user.mdel';
 
@@ -9,52 +9,51 @@ import { IUser } from '../models/user.mdel';
 })
 export class Auth {
   private readonly API = `${environment.apiURL}user`;
-  private readonly tokenKey = 'auth_token';
-  isLoggedInState = !!localStorage.getItem(this.tokenKey);
-
+  private userSubject = new BehaviorSubject<IUser | null>(null);
+  user$ = this.userSubject.asObservable();
   constructor(private http: HttpClient) {}
 
   signup(data: IUser) {
-    return this.http.post<{ token?: string }>(`${this.API}`, data, {
-      withCredentials: true,
-    }).pipe(tap((response) => this.storeToken(response.token)));
-  }
-
-  login(data: { email: string; password: string }) {
-    return this.http.post<{ token?: string }>(`${this.API}/login`, data, {
-      withCredentials: true,
-    }).pipe(tap((response) => this.storeToken(response.token)));
-  }
-
-  getMe() {
-    return this.http.get<{ status: string; data: IUser }>(`${this.API}/me`, {
+    return this.http.post(`${this.API}`, data, {
       withCredentials: true,
     });
   }
+
+  login(data: { email: string; password: string }) {
+    return this.http.post(`${this.API}/login`, data);
+  }
+
+  getMe() {
+  return this.http.get(`${this.API}/me`).pipe(
+    tap((res: any) => {
+      this.userSubject.next(res.data);
+    }),
+    catchError(() => {
+      this.userSubject.next(null);
+      return of(null);
+    })
+  );
+}
 
   isAdmin() {
     return this.getMe().pipe(map((response) => response.data?.role === 'admin'));
   }
 
+  get isLoggedIn$() {
+    return this.user$.pipe(map((user) => !!user));
+  }
+
   logout() {
     return this.http
-      .post(`${this.API}/logout`, {}, { withCredentials: true })
-      .pipe(tap(() => this.clearSession()));
-  }
-
-  getToken() {
-    return localStorage.getItem(this.tokenKey);
-  }
-
-  clearSession() {
-    localStorage.removeItem(this.tokenKey);
-    this.isLoggedInState = false;
-  }
-
-  private storeToken(token?: string | null) {
-    if (!token) return;
-
-    localStorage.setItem(this.tokenKey, token);
-    this.isLoggedInState = true;
+      .post(
+        `${this.API}/logout`,
+        {},
+      )
+      .pipe(
+        tap((res) => {
+          console.log(res);
+          this.userSubject.next(null);
+        }),
+      );
   }
 }

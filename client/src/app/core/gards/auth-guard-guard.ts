@@ -7,18 +7,19 @@ export const authGuardGuard: CanActivateFn = (route, state) => {
   const auth = inject(Auth);
   const router = inject(Router);
 
-  if (!auth.getToken()) {
-    return of(router.createUrlTree(['/login']));
-  }
-
   return auth.getMe().pipe(
     map((response) => {
+      // ✅ لو user موجود و admin
       if (response.data?.role === 'admin') {
         return true;
       }
 
+      // ❌ مش admin
       return router.createUrlTree(['/home']);
     }),
-    catchError(() => of(router.createUrlTree(['/login']))),
+    catchError(() => {
+      // ❌ مش logged in أصلاً (401)
+      return of(router.createUrlTree(['/login']));
+    })
   );
 };
