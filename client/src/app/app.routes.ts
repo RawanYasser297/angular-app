@@ -15,6 +15,7 @@ import { Cart } from './client/pages/cart/cart';
 import { Login } from './client/pages/login/login';
 import { Signup } from './client/pages/signup/signup';
 import { authGuardGuard } from './core/gards/auth-guard-guard';
+import { Category } from './client/pages/category/category';
 
 export const routes: Routes = [
   {
@@ -24,7 +25,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeLayout },
       { path: 'cart', component: Cart },
-      // { path: 'products', component: ProductsList },
+      { path: ':category', component: Category },
       {
         path: 'details/:slug',
         component: ProductDetails,

@@ -42,10 +42,25 @@
     <select formControlName="category" class="w-full border border-gray-300 rounded-lg p-2 
            focus:outline-none focus:ring-2 focus:ring-blue-500">
       <option value="" disabled>Select Category</option>
-      <option value="men" >Men</option>
+      <option value="men">Men</option>
       <option value="women">Women</option>
       <option value="children">Children</option>
       <option value="teenager">Teenager</option>
+    </select>
+  </div>
+
+  <!-- Sub Category -->
+  <div>
+    <label class="block text-sm font-medium mb-1">Sub Category</label>
+
+    <select formControlName="subCategory" class="w-full border border-gray-300 rounded-lg p-2 
+           focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option value="" disabled>Select Sub Category</option>
+
+      <option *ngFor="let sub of filteredSubCategories" [value]="sub">
+        {{ sub }}
+      </option>
+
     </select>
   </div>
 
@@ -55,7 +70,7 @@
     <select formControlName="session" class="w-full border border-gray-300 rounded-lg p-2 
            focus:outline-none focus:ring-2 focus:ring-blue-500">
       <option value="" disabled>Select Session</option>
-      <option value="summer" >Summer</option>
+      <option value="summer">Summer</option>
       <option value="winter">Winter</option>
       <option value="autumn">Autumn</option>
       <option value="spring">Spring</option>

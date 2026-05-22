@@ -28,19 +28,13 @@
       <!-- Shop Dropdown -->
       <div class="relative">
         <button (click)="toggleShopDropdown()" class="flex items-center gap-1 hover:text-black">
-          Shop ▾
+          <a routerLink="/category" class="text-2xl font-bold"> Shop ▾</a>
         </button>
 
         <!-- Dropdown -->
-        <div *ngIf="shopDropdownOpen" class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-xl shadow-lg
-                 transition-all duration-200 origin-top scale-95 opacity-0 animate-dropdown">
-          <a routerLink="/home" class="block px-4 py-2 hover:bg-gray-100">Men</a>
-          <a routerLink="/home" class="block px-4 py-2 hover:bg-gray-100">Women</a>
-          <a routerLink="/home" class="block px-4 py-2 hover:bg-gray-100">Kids</a>
-        </div>
+
       </div>
-      <a routerLink="/home" fragment="new-arrivals">New Arrivals</a>
-      <a routerLink="/home" fragment="brands">Brands</a>
+
     </nav>
 
     <!-- 🔍 Search -->

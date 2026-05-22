@@ -1,4 +1,4 @@
-<div class="bg-white absolute left-0 w-87.5 max-w-sm mx-auto p-5 rounded-2xl shadow-md">
+<div class="bg-white  w-87.5 max-w-sm mx-auto p-5 rounded-2xl shadow-md">
 
     <!-- Header -->
     <div class="flex items-center justify-between mb-4">
@@ -26,7 +26,7 @@
 
                 <!-- Children -->
                 <div *ngIf="cat.open" class="px-3 pb-2 space-y-1">
-                    <button *ngFor="let sub of cat.items" (click)="selectSubCategory(sub)"
+                    <button *ngFor="let sub of cat.items" (click)="selectSubCategory(sub, cat)"
                         class="block w-full text-left px-2 py-1 rounded hover:bg-gray-100 transition"
                         [class.bg-gray-100]="selectedCategory === sub">
                         {{ sub }}

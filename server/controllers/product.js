@@ -3,7 +3,7 @@ const Product = require("../models/product"); // Path to your schema file
 // @desc    Create a new product
 // @route   POST /api/products
 exports.createProduct = async (req, res) => {
-  const { title, price, slug, category, stock, session, description } =
+  const { title, price, slug, category,subCategory, stock, session, description } =
     req.body;
 
 
@@ -22,6 +22,7 @@ exports.createProduct = async (req, res) => {
       images,
       slug,
       category,
+      subCategory,
       stock,
       session,
       status: getStatus(Number(stock)),

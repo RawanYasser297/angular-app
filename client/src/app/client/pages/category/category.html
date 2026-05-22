@@ -1,3 +1,16 @@
- <div>
-        <app-filter></app-filter>
+<div class="flex flex-row gap-13">
+
+        <!-- Filters -->
+        <app-filter class="col-span-1" (filterChange)="onFilterChange($event)"></app-filter>
+
+        <!-- Products -->
+        <!-- ✅ Products -->
+                <ng-container *ngIf="!isLoading && filteredProducts.length">
+                        <app-product-card *ngFor="let product of filteredProducts" [title]="product.title"
+                                [price]="product.price" [slug]="product.slug"
+                                [image]="environment.staticFilesURL + product.images[0]"
+                                [routerLink]="['/details', product.slug]" class="cursor-pointer">
+                        </app-product-card>
+                </ng-container>
+
 </div>

@@ -1,10 +1,56 @@
 import { Component } from '@angular/core';
 import { Filter } from '../../shared/components/filter/filter';
+import { ProductsGrid } from '../../shared/components/products-grid/products-grid';
+import { ProductService } from '../../../core/services/product.service';
+import { IProduct } from '../../../core/models/products.model';
+import { ProductCard } from '../../shared/components/product-card/product-card';
+import { environment } from '../../../../environments/global';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-category',
-  imports: [Filter],
+  imports: [Filter, ProductCard, CommonModule,RouterLink],
   templateUrl: './category.html',
   styleUrl: './category.css',
 })
-export class Category {}
+export class Category {
+  isLoading = false;
+  allProducts: IProduct[] = [];
+  filteredProducts: IProduct[] = [];
+  environment = environment;
+
+  constructor(private productService: ProductService) {}
+
+  ngOnInit() {
+    this.getAllProducts();
+  }
+
+  getAllProducts() {
+    this.isLoading = true;
+
+    this.productService.getProducts().subscribe({
+      next: (res: any) => {
+        this.allProducts = res.data;
+        this.filteredProducts = [...this.allProducts]; // أول مرة كله
+        this.isLoading = false;
+      },
+      error: () => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  onFilterChange(filters: { category?: string; subCategory?: string; maxPrice?: number }) {
+    this.filteredProducts = this.allProducts.filter((product) => {
+      const matchCategory = !filters.category || product.category === filters.category;
+
+      const matchSubCategory = !filters.subCategory || product.subCategory === filters.subCategory;
+
+      const matchPrice = !filters.maxPrice || product.price <= filters.maxPrice;
+
+      console.log(matchCategory , matchSubCategory , matchPrice)
+      return matchCategory && matchSubCategory && matchPrice;
+    });
+  }
+}

@@ -1,48 +1,67 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+
+type Category = 'men' | 'women' | 'children';
+
+interface CategoryItem {
+  name: string;
+  open: boolean;
+  items: string[];
+}
 
 @Component({
   selector: 'app-filter',
-  imports: [CommonModule,FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './filter.html',
   styleUrl: './filter.css',
 })
 export class Filter {
   priceRange = 200;
 
-  categories = [
+  categories: CategoryItem[] = [
     {
-      name: 'Men',
+      name: 'men',
       open: false,
-      items: ['T-shirts', 'Shirts', 'Hoodies', 'Jeans'],
+      items: ['t-shirts', 'shirts', 'hoodies', 'jeans'],
     },
     {
-      name: 'Women',
+      name: 'women',
       open: false,
-      items: ['Dresses', 'Tops', 'Skirts', 'Jeans'],
+      items: ['dresses', 'tops', 'skirts', 'jeans'],
     },
     {
-      name: 'Children',
+      name: 'children',
       open: false,
-      items: ['T-shirts', 'Shorts', 'Sets'],
+      items: ['t-shirts', 'shorts', 'sets'],
     },
   ];
 
-  selectedCategory = '';
+  selectedCategory: Category | '' = '';
+  selectedSubCategory: string = '';
 
-  toggleCategory(cat: any) {
+  @Output() filterChange = new EventEmitter<{
+    category: string;
+    subCategory: string;
+    maxPrice: number;
+  }>();
+
+  toggleCategory(cat: CategoryItem) {
     cat.open = !cat.open;
   }
 
-  selectSubCategory(sub: string) {
-    this.selectedCategory = sub;
+  // 👇 أهم تعديل
+  selectSubCategory(sub: string, parent: CategoryItem) {
+    this.selectedCategory = parent.name as Category;
+    this.selectedSubCategory = sub;
   }
 
   applyFilter() {
-    console.log({
+    this.filterChange.emit({
       category: this.selectedCategory,
-      price: this.priceRange,
+      subCategory: this.selectedSubCategory,
+      maxPrice: this.priceRange,
     });
   }
 }

@@ -4,6 +4,7 @@ export interface IProduct {
   description: string;
   images: [string];
   category: string;
+  subCategory: string;
   rating:number
   sku: string;
   status: string;

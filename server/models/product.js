@@ -7,9 +7,32 @@ const productSchema = new Schema(
     price: { type: Number, required: true },
     images: [{ type: String }],
     description: { type: String },
-    category: { type: String, required: true , enum: ["women", "men", "teenager","children"]},
+    category: {
+      type: String,
+      required: true,
+      enum: ["women", "men", "teenager", "children"],
+    },
+    subCategory: {
+      type: String,
+      enum: [
+        "t-shirts",
+        "shirts",
+        "hoodies",
+        "jeans",
+        "dresses",
+        "tops",
+        "skirts",
+        "shorts",
+        "sets",
+      ],
+      required: true,
+    },
     stock: { type: Number, default: 0 },
-    session:{ type: String, required: true , enum: ["summer", "winter", "spring","autumn"]},
+    session: {
+      type: String,
+      required: true,
+      enum: ["summer", "winter", "spring", "autumn"],
+    },
     slug: { type: String, unique: true, required: true },
     status: {
       type: String,
@@ -17,9 +40,7 @@ const productSchema = new Schema(
     },
   },
   { timestamps: true },
-
 );
-
 
 const Product = mongoose.model("Product", productSchema);
 
