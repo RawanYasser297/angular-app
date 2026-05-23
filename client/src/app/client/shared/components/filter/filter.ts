@@ -51,13 +51,14 @@ export class Filter {
     cat.open = !cat.open;
   }
 
-  // 👇 أهم تعديل
+  
   selectSubCategory(sub: string, parent: CategoryItem) {
     this.selectedCategory = parent.name as Category;
     this.selectedSubCategory = sub;
   }
 
   applyFilter() {
+    console.log(this.filterChange)
     this.filterChange.emit({
       category: this.selectedCategory,
       subCategory: this.selectedSubCategory,

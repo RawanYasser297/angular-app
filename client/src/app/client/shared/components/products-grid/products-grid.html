@@ -15,7 +15,7 @@
   </ng-container>
 
   <!-- ✅ Products -->
-  <ng-container *ngIf="!isLoading && myProducts.length">
+  <ng-container *ngIf="!isLoading && myProducts.length > 0">
     <app-product-card
       *ngFor="let product of myProducts"
       [title]="product.title"

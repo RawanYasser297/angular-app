@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { ProductCard } from '../product-card/product-card';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -9,30 +9,24 @@ import { ProductCardSkeletonComponent } from '../../../../components/product-car
 
 @Component({
   selector: 'app-products-grid',
-  imports: [CommonModule, ProductCard, RouterLink,ProductCardSkeletonComponent],
+  imports: [CommonModule, ProductCard, RouterLink, ProductCardSkeletonComponent],
   templateUrl: './products-grid.html',
   styleUrl: './products-grid.css',
 })
-export class ProductsGrid {
-  isLoading = true;
+export class ProductsGrid implements OnInit{
+  @Input() isLoading = true;
+  @Input() myProducts !: IProduct[] ;
+
+  environment = environment;
+ 
   constructor(
     private _productService: ProductService,
     private _cdr: ChangeDetectorRef,
   ) {}
 
-  environment = environment;
-
-  myProducts!: IProduct[];
-
-  ngOnInit(): void {
-    this._productService.getProducts().subscribe({
-      next: (res) => {
-        this.isLoading = false;
-        this.myProducts = res.data;
-        this._cdr.detectChanges();
-        console.log(this.myProducts);
-      },
-      error: () => (this.isLoading = false),
-    });
+  ngOnInit(){
+  console.log(this.myProducts)
+  
   }
+  
 }

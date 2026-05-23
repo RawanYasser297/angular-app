@@ -5,12 +5,11 @@
 
         <!-- Products -->
         <!-- ✅ Products -->
-                <ng-container *ngIf="!isLoading && filteredProducts.length">
-                        <app-product-card *ngFor="let product of filteredProducts" [title]="product.title"
-                                [price]="product.price" [slug]="product.slug"
-                                [image]="environment.staticFilesURL + product.images[0]"
-                                [routerLink]="['/details', product.slug]" class="cursor-pointer">
-                        </app-product-card>
-                </ng-container>
+
+        <ng-container *ngIf="!isLoading && allProducts.length">
+                <app-products-grid [myProducts]="allProducts" [isLoading]="isLoading">
+
+                </app-products-grid>
+        </ng-container>
 
 </div>

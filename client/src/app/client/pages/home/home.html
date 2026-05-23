@@ -46,7 +46,7 @@
       <h2>The newest 6 products from your database</h2>
     </div>
 
-    <div class="products-grid" *ngIf="newestProducts.length; else productsFallback">
+    <!-- <div class="products-grid" *ngIf="newestProducts.length; else productsFallback">
       <app-product-card
         *ngFor="let product of newestProducts"
         [title]="product.title"
@@ -55,7 +55,11 @@
         [image]="environment.staticFilesURL + product.images[0]"
       >
       </app-product-card>
-    </div>
+    </div> -->
+
+    <app-products-grid [myProducts]="myProducts" [isLoading]="isLoading">
+
+    </app-products-grid>
 
     <ng-template #productsFallback>
       <p class="empty-state">

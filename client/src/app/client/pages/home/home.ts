@@ -4,16 +4,17 @@ import { RouterLink } from '@angular/router';
 import { environment } from '../../../../environments/global';
 import { ILogo } from '../../../core/models/brands.model';
 import { IHero } from '../../../core/models/hero.content.model';
-import { IProduct } from '../../../core/models/products.model';
+import { IProduct, IProductRes } from '../../../core/models/products.model';
 import { BrandsServices } from '../../../core/services/brands.services';
 import { HeroService } from '../../../core/services/hero-service';
 import { ProductService } from '../../../core/services/product.service';
 import { TestimonialsComponent } from '../../components/testimonials.component/testimonials.component';
 import { ProductCard } from '../../shared/components/product-card/product-card';
+import { ProductsGrid } from '../../shared/components/products-grid/products-grid';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterLink, ProductCard, TestimonialsComponent],
+  imports: [CommonModule, RouterLink, TestimonialsComponent,ProductsGrid],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -25,12 +26,16 @@ export class Home {
   isHeroLoading = true;
   isBrandsLoading = true;
   isProductsLoading = true;
+  isLoading=true
+  myProducts: IProduct[]=[];
+ 
 
   constructor(
     private heroService: HeroService,
     private brandsService: BrandsServices,
     private productService: ProductService,
     private cdr: ChangeDetectorRef,
+    private _productService:ProductService
   ) {}
 
   ngOnInit(): void {
@@ -66,21 +71,16 @@ export class Home {
   }
 
   private loadProducts() {
-    this.productService.getProducts().subscribe({
+    this._productService.getProducts().subscribe({
       next: (res) => {
-        this.newestProducts = [...(res.data ?? [])]
-          .sort((a, b) => {
-            const first = new Date(a.createdAt ?? 0).getTime();
-            const second = new Date(b.createdAt ?? 0).getTime();
-            return second - first;
-          })
-          .slice(0, 6);
-        this.isProductsLoading = false;
+        this.isLoading = false;
+        this.myProducts = res.data;
         this.cdr.detectChanges();
       },
-      error: () => {
-        this.isProductsLoading = false;
-      },
+      error: () => (this.isLoading = false),
     });
+  
   }
+
+  
 }
